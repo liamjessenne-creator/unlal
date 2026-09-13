@@ -10,32 +10,84 @@
   <meta name="theme-color" content="#0b2c5f" />
   <title>UNAL Market · Armentières</title>
   <style>
-    /* Art Disco by Barry Mieny (OFL) — secondary titles (self-hosted, no external requests) */
+    /* Clash Display (Fontshare — ITF Free Font License, free for commercial use)
+       Secondary titles — self-hosted, no external requests. */
     @font-face {
-      font-family: "Art Disco";
+      font-family: "Clash Display";
       font-style: normal;
-      font-weight: 400;
+      font-weight: 200 700;
       font-display: swap;
-      src: url("/assets/fonts/artdisco.woff2") format("woff2"),
-           url("/assets/fonts/artdisco.woff") format("woff");
+      src: url("/assets/fonts/clash-display-var.woff2") format("woff2");
     }
-    /* Secondary titles only — the main hero title keeps its own font.
-       Note: Art Disco has no accented glyphs; é/è/. fall back to Archivo. */
-    .font-artdisco {
-      font-family: "Art Disco", "Archivo", system-ui, sans-serif;
+    /* Secondary titles only — the main hero title keeps its own font. */
+    .font-display {
+      font-family: "Clash Display", "Archivo", system-ui, sans-serif;
     }
-    /* 3D card (Aceternity-style) minimal chrome */
+    /* Liquid-glass text treatment for the homepage secondary titles. */
+    .glass-title {
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: #eaf3ff;
+      -webkit-text-fill-color: #eaf3ff;
+      filter: drop-shadow(0 12px 30px rgba(96, 170, 255, 0.22));
+    }
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      .glass-title {
+        background: linear-gradient(165deg, #ffffff 0%, #d5e9ff 42%, #93bcff 62%, #eaf5ff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+    /* Keep accent-colored inner spans solid (e.g. "simplement." in brand blue). */
+    .glass-title :is(span, strong, b) {
+      -webkit-text-fill-color: currentColor;
+      background: none;
+    }
+    /* 3D card — liquid glass chrome */
     .card-3d-container { display: block; width: 100%; }
     .card-3d-body {
       position: relative;
-      border-radius: 1rem;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(10, 22, 48, 0.55);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      border-radius: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.12) 100%),
+        rgba(13, 24, 50, 0.38);
+      backdrop-filter: blur(20px) saturate(170%);
+      -webkit-backdrop-filter: blur(20px) saturate(170%);
       padding: 1.75rem;
-      box-shadow: 0 22px 60px rgba(4, 12, 32, 0.45);
+      overflow: hidden;
+      box-shadow:
+        0 24px 70px rgba(4, 12, 32, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.08),
+        inset 1px 0 0 rgba(255, 255, 255, 0.10),
+        inset 0 0 26px rgba(255, 255, 255, 0.05);
     }
+    /* Static liquid-glass sheen (top-left key light + bottom aqua bounce) */
+    .card-3d-body::before {
+      content: "";
+      position: absolute;
+      inset: -45%;
+      background:
+        radial-gradient(42% 36% at 26% 20%, rgba(255, 255, 255, 0.30), transparent 62%),
+        radial-gradient(38% 32% at 80% 84%, rgba(112, 214, 255, 0.16), transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Specular glare that follows the pointer while tilting */
+    .card-3d-body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(240px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.16), transparent 58%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .card-3d-container:hover .card-3d-body::after { opacity: 1; }
+    .card-3d-body > * { position: relative; z-index: 1; }
   </style>
   <script src="/mandala-background.js" defer></script>
   <script src="/card-3d.js" defer></script>

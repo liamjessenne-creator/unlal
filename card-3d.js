@@ -66,6 +66,10 @@
       const py = (e.clientY - rect.top) / rect.height - 0.5;
       s.tx = -py * 10; // rotateX range ±5deg (as the original component)
       s.ty = px * 10;
+      const gx = ((px + 0.5) * 100).toFixed(1);
+      const gy = ((py + 0.5) * 100).toFixed(1);
+      body.style.setProperty("--gx", gx + "%");
+      body.style.setProperty("--gy", gy + "%");
       kick();
     };
     const onLeave = () => {
