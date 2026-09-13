@@ -42,6 +42,27 @@
     "3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 " +
     "31.781-10.422Z";
 
+  // ---- exact framer-motion spring (stiffness 400, damping 25, mass 1),
+  // sampled into a CSS linear() easing: snappy, ~8% overshoot, ~0.4s settle.
+  // This is what makes the relief "punch in" when the cursor arrives.
+  function springEasing(stiffness = 400, damping = 25, mass = 1, duration = 0.45) {
+    const w0 = Math.sqrt(stiffness / mass);
+    const zeta = damping / (2 * Math.sqrt(stiffness * mass));
+    const wd = w0 * Math.sqrt(1 - zeta * zeta);
+    const N = 30;
+    const stops = [];
+    for (let i = 0; i <= N; i++) {
+      const t = (i / N) * duration;
+      const x =
+        1 -
+        Math.exp(-zeta * w0 * t) *
+          (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t));
+      stops.push(`${((100 * i) / N).toFixed(1)}% ${x.toFixed(4)}`);
+    }
+    return `linear(${stops.join(", ")})`;
+  }
+  const SPRING = springEasing();
+
   // ---- exact stylesheet from the component ----------------------------------
   function injectStyle() {
     if (document.getElementById("sparkle-button-style")) return;
@@ -57,6 +78,7 @@
     document.head.appendChild(props);
     const style = document.createElement("style");
     style.id = "sparkle-button-style-rules";
+    // SPRING is interpolated into the template below
     style.innerHTML = `
 .sparkle-button {
   --padding: 24px 32px;
@@ -69,17 +91,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* framer-motion "rest" variant values, as plain CSS (raised 0.4 -> 0.55
-     for the deeper relief the owner asked for) */
-  --hover: 0.55;
+  /* framer-motion "rest" variant values, as plain CSS (EXACT component value) */
+  --hover: 0.4;
   --pos: 0;
-  transition: --hover 0.55s cubic-bezier(0.32, 0, 0.67, 0), --pos 0s;
+  transition: --hover 0.45s ${SPRING}, --pos 0s;
 }
 .sparkle-button:hover {
-  /* framer-motion "hover" variant: --pos animates linearly over 1/glareSpeed */
+  /* framer-motion "hover" variant: same spring; --pos linear over 1/glareSpeed */
   --hover: 1;
   --pos: 1;
-  transition: --hover 0.55s cubic-bezier(0.32, 0, 0.67, 0), --pos 1s linear;
+  transition: --hover 0.45s ${SPRING}, --pos 1s linear;
 }
 .sparkle-button:active {
   --hover: 0; /* framer-motion "tap" variant */
