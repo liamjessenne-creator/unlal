@@ -1,0 +1,17 @@
+{
+  "name": "UNAL Market · Armentières",
+  "short_name": "UNAL MARKET",
+  "description": "Menu digital d'UNAL MARKET à Armentières",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070d",
+  "theme_color": "#0b2c5f",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

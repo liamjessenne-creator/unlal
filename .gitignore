@@ -1,0 +1,8 @@
+# Local tooling & artifacts (not part of the site)
+.freebuff/
+node_modules/
+.vercel/
+*.log
+*.log.err
+.DS_Store
+Thumbs.db

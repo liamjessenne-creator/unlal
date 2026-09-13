@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="49.3 0 297.4 644" font-family="Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <!-- Base landmass -->
+  <rect x="49.3" y="0" width="297.4" height="644" fill="#e8eaed"/>
+
+  <!-- Buildings (white blocks, light gray outline) -->
+  <g stroke="#e0e3e7" stroke-width="0.7" fill="#ffffff">
+    <!-- top-left cluster -->
+    <path d="M12,14 L68,10 L72,46 L16,50 Z"/>
+    <path d="M80,12 L146,8 L150,46 L84,50 Z"/>
+    <path d="M158,22 L216,19 L218,58 L160,61 Z"/>
+    <path d="M64,60 L130,56 L133,96 L67,100 Z"/>
+    <path d="M148,62 L206,59 L208,98 L150,101 Z"/>
+    <path d="M270,18 L330,14 L333,58 L273,62 Z"/>
+    <path d="M342,14 L392,12 L392,54 L345,56 Z"/>
+    <path d="M266,76 L320,73 L322,114 L268,117 Z"/>
+    <path d="M332,70 L392,68 L392,104 L334,106 Z"/>
+    <!-- mid-left -->
+    <path d="M8,98 L52,96 L54,132 L10,134 Z"/>
+    <path d="M56,150 L118,147 L120,190 L58,193 Z"/>
+    <path d="M86,136 L150,133 L153,172 L89,175 Z"/>
+    <path d="M8,226 L48,224 L50,262 L10,264 Z"/>
+    <path d="M30,268 L94,264 L97,308 L33,312 Z"/>
+    <path d="M106,288 L160,285 L162,318 L108,321 Z"/>
+    <!-- mid-right -->
+    <path d="M256,128 L300,126 L302,168 L258,170 Z"/>
+    <path d="M258,190 L324,187 L326,228 L260,231 Z"/>
+    <!-- lower-left -->
+    <path d="M8,450 L55,448 L57,490 L10,492 Z"/>
+    <path d="M86,440 L150,437 L152,478 L89,481 Z"/>
+    <path d="M8,505 L48,503 L50,546 L10,548 Z"/>
+    <path d="M92,498 L160,495 L162,543 L95,546 Z"/>
+    <path d="M5,570 L58,568 L60,608 L7,610 Z"/>
+    <path d="M96,558 L170,555 L172,600 L99,603 Z"/>
+    <path d="M96,612 L164,608 L166,648 L98,652 Z"/>
+    <!-- lower-right -->
+    <path d="M282,322 L340,318 L343,360 L285,364 Z"/>
+    <path d="M352,332 L392,330 L392,378 L355,380 Z"/>
+    <path d="M352,522 L392,520 L392,560 L355,562 Z"/>
+    <path d="M272,540 L330,537 L333,578 L275,581 Z"/>
+    <path d="M276,560 L334,557 L336,598 L279,601 Z"/>
+    <path d="M346,564 L392,562 L392,608 L349,610 Z"/>
+    <path d="M258,616 L322,612 L324,656 L260,660 Z"/>
+  </g>
+
+  <!-- Road casings -->
+  <g fill="none" stroke="#d8dadd">
+    <path d="M 237,-6 L 234,140 L 217,295 L 221,420 L 239,650" stroke-width="44"/>
+    <path d="M -12,136 L 122,242 L 218,320" stroke-width="37"/>
+    <path d="M 408,190 L 298,258 L 234,322" stroke-width="33"/>
+    <path d="M 224,382 L 312,448 L 404,502" stroke-width="33"/>
+    <path d="M 214,360 L 88,398 L -12,430" stroke-width="30"/>
+    <path d="M -12,56 L 142,120 L 214,178" stroke-width="24"/>
+    <path d="M 72,412 L 56,520 L 76,650" stroke-width="24"/>
+    <path d="M 318,-8 L 408,56" stroke-width="24"/>
+  </g>
+
+  <!-- Road fills -->
+  <g fill="none" stroke="#ffffff">
+    <path d="M 237,-6 L 234,140 L 217,295 L 221,420 L 239,650" stroke-width="40"/>
+    <path d="M -12,136 L 122,242 L 218,320" stroke-width="33"/>
+    <path d="M 408,190 L 298,258 L 234,322" stroke-width="29"/>
+    <path d="M 224,382 L 312,448 L 404,502" stroke-width="29"/>
+    <path d="M 214,360 L 88,398 L -12,430" stroke-width="26"/>
+    <path d="M -12,56 L 142,120 L 214,178" stroke-width="20"/>
+    <path d="M 72,412 L 56,520 L 76,650" stroke-width="20"/>
+    <path d="M 318,-8 L 408,56" stroke-width="20"/>
+  </g>
+
+  <!-- Direction arrows -->
+  <g fill="none" stroke="#c4c7cb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 222,226 L 226,218 L 230,226"/>
+    <path d="M 223,455 L 226,447 L 229,455"/>
+    <path d="M 224,556 L 227,548 L 230,556"/>
+    <path d="M -4,4 L 0,-3 L 4,4" transform="translate(150 258) rotate(38)"/>
+    <path d="M -4,4 L 0,-3 L 4,4" transform="translate(340 468) rotate(34)"/>
+    <path d="M -4,4 L 0,-3 L 4,4" transform="translate(352 208) rotate(-32)"/>
+    <path d="M -4,4 L 0,-3 L 4,4" transform="translate(120 100) rotate(24)"/>
+  </g>
+
+  <!-- Street labels -->
+  <g fill="#74777c" font-size="12.5" letter-spacing="0.3">
+    <text transform="translate(62 194) rotate(38)" text-anchor="middle">Rue Paul Hazard</text>
+    <text transform="translate(352 227) rotate(-32)" text-anchor="middle">Rue du Marais</text>
+    <text transform="translate(322 447) rotate(34)" text-anchor="middle">Rue Bvart</text>
+    <text transform="translate(30 417) rotate(-18)" text-anchor="middle">Rue Papin</text>
+    <text transform="translate(390 28) rotate(-33)" text-anchor="end">e S</text>
+    <text transform="translate(150 260) rotate(-58)" text-anchor="middle" font-size="11" fill="#8a8d92">Pl. Thiers</text>
+  </g>
+
+  <!-- Recently-viewed snippet -->
+  <g>
+    <text x="-2" y="333" font-size="12" fill="#7d8186">…vous aide à sortir de</text>
+    <text x="-2" y="351" font-size="12" fill="#7d8186">…turbulences de vie...</text>
+    <text x="6" y="372" font-size="11" fill="#9aa0a6">Recently viewed</text>
+    <circle cx="137" cy="342" r="8.5" fill="#757a80" stroke="#ffffff" stroke-width="2.5"/>
+    <circle cx="137" cy="342" r="2.8" fill="#ffffff"/>
+  </g>
+
+  <!-- POI: Beepad -->
+  <text x="192" y="92.5" text-anchor="end" font-size="13" fill="#5f6368">Bepad</text>
+  <circle cx="205" cy="88" r="8.5" fill="#757a80" stroke="#ffffff" stroke-width="2.5"/>
+  <circle cx="205" cy="88" r="2.8" fill="#ffffff"/>
+
+  <!-- POI: Auto Ecole Mas -->
+  <text x="196" y="159.5" text-anchor="end" font-size="13" fill="#5f6368">Auto Ecole Mas</text>
+  <circle cx="210" cy="155" r="8.5" fill="#757a80" stroke="#ffffff" stroke-width="2.5"/>
+  <circle cx="210" cy="155" r="2.8" fill="#ffffff"/>
+
+  <!-- POI: La Gourmand -->
+  <rect x="286" y="226" width="19" height="19" rx="4" fill="#e8710a"/>
+  <g stroke="#ffffff" stroke-width="1.1" fill="none" stroke-linecap="round">
+    <path d="M 291.5,230.5 v3.5 M 293.6,230.5 v3.5 M 295.7,230.5 v3.5 M 293.6,234 v6.5"/>
+    <path d="M 299.5,230.5 c 1.4,1.8 1.4,4.6 0,6.2 v4"/>
+  </g>
+  <text x="311" y="240" font-size="12.5" fill="#c5221f">La Gourmand</text>
+
+  <!-- Traffic light -->
+  <rect x="219" y="240" width="11" height="17" rx="2.5" fill="#ffffff" stroke="#d5d7db" stroke-width="0.8"/>
+  <circle cx="224.5" cy="245" r="1.6" fill="#ea4335"/>
+  <circle cx="224.5" cy="249" r="1.6" fill="#f9ab00"/>
+  <circle cx="224.5" cy="253" r="1.6" fill="#34a853"/>
+
+  <!-- Bus stops -->
+  <g>
+    <rect x="243" y="342" width="12" height="12" rx="2.5" fill="#1a73e8"/>
+    <rect x="245.5" y="345" width="7" height="4.5" rx="1" fill="#ffffff"/>
+    <circle cx="246.2" cy="351.4" r="0.9" fill="#ffffff"/>
+    <circle cx="251.8" cy="351.4" r="0.9" fill="#ffffff"/>
+  </g>
+  <g>
+    <rect x="222" y="386" width="12" height="12" rx="2.5" fill="#1a73e8"/>
+    <rect x="224.5" y="389" width="7" height="4.5" rx="1" fill="#ffffff"/>
+    <circle cx="225.2" cy="395.4" r="0.9" fill="#ffffff"/>
+    <circle cx="230.8" cy="395.4" r="0.9" fill="#ffffff"/>
+  </g>
+
+  <!-- Location pin + coordinates -->
+  <ellipse cx="207" cy="320" rx="7" ry="2" fill="#1a1a1a" opacity="0.12"/>
+  <path d="M 207,321 C 200,309 194.5,304.5 194.5,297.5 A 12.5,12.5 0 1 1 219.5,297.5 C 219.5,304.5 214,309 207,321 Z" fill="#4285f4"/>
+  <circle cx="207" cy="297.5" r="4.4" fill="#ffffff"/>
+  <text x="226" y="294" font-size="11.5" fill="#1a73e8">50.687543, 2.877786</text>
+</svg>
