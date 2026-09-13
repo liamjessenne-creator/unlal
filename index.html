@@ -9,8 +9,43 @@
   <meta name="description" content="Menu digital d'UNAL MARKET à Armentières : sandwichs, burgers, pâtes et tacos, avec mode d'affichage pour les écrans du magasin." />
   <meta name="theme-color" content="#0b2c5f" />
   <title>UNAL Market · Armentières</title>
-  <script src="/background-ray-column.js" defer></script>
-  <script src="/cube-glass.js" defer></script>
+  <style>
+    /* Gotu — secondary titles (auto-hosted, no external requests) */
+    @font-face {
+      font-family: "Gotu";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("/assets/gotu-latin.woff2") format("woff2");
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: "Gotu";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("/assets/gotu-latin-ext.woff2") format("woff2");
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* Secondary titles only — the main hero title keeps its own font. */
+    .font-gotu {
+      font-family: "Gotu", "Archivo", system-ui, sans-serif;
+    }
+    /* 3D card (Aceternity-style) minimal chrome */
+    .card-3d-container { display: block; width: 100%; }
+    .card-3d-body {
+      position: relative;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(10, 22, 48, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 1.75rem;
+      box-shadow: 0 22px 60px rgba(4, 12, 32, 0.45);
+    }
+  </style>
+  <script src="/mandala-background.js" defer></script>
+  <script src="/card-3d.js" defer></script>
   <script type="module" crossorigin src="/assets/index-BlaB6_gO.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-Dmi22DON.js">
   <link rel="modulepreload" crossorigin href="/assets/framer-motion-D78Ggd5X.js">
