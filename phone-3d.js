@@ -204,8 +204,9 @@
     const cF = add(0, 0, d2, 0, 0, 1, 0.5, 0.5, 0);
     for (let i = 0; i < n; i++) idx.push(cF, ringF[i], ringF[(i + 1) % n]);
 
-    // back cap — U mirrored so the back reads correctly when flipped around
-    const ringB = pts.map(([x, y]) => add(x, y, -d2, 0, 0, -1, 0.5 - x / W, y / H + 0.5, 1));
+    // back cap — UVs rotated 180° (u and v mirrored) so the back reads
+    // upright and un-mirrored when the phone is flipped around
+    const ringB = pts.map(([x, y]) => add(x, y, -d2, 0, 0, -1, 0.5 - x / W, 0.5 - y / H, 1));
     const cB = add(0, 0, -d2, 0, 0, -1, 0.5, 0.5, 1);
     for (let i = 0; i < n; i++) idx.push(cB, ringB[(i + 1) % n], ringB[i]);
 
