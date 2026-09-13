@@ -1,5 +1,6 @@
 # Local tooling & artifacts (not part of the site)
 .freebuff/
+_tools/
 node_modules/
 .vercel/
 *.log
