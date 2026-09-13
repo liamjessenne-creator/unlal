@@ -106,8 +106,104 @@
     .phone-3d-host:active { cursor: grabbing; }
     .phone-3d-host > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
     /* /menu — dish line: name, dotted leader, price aligned right */
-    .menu-item-row { position: relative; }
-    .menu-item-name { position: relative; z-index: 1; background: #0d1b36; padding-right: 0.5rem; }
+    .menu-item-row { position: relative; transition: background 0.2s ease; }
+    .menu-item-row:hover { background: rgba(112, 214, 255, 0.05); border-radius: 6px; }
+    .menu-item-name { position: relative; z-index: 1; background: #0d1b36; padding-right: 0.5rem; transition: color 0.2s ease; }
+    .menu-item-row:hover .menu-item-name { color: #eaf3ff; }
+    /* ============ UI POLISH LAYER (Magic UI-style) ============ */
+    html { scroll-behavior: smooth; }
+    ::selection { background: rgba(112, 214, 255, 0.35); color: #ffffff; }
+    [id] { scroll-margin-top: 96px; }
+    /* Film grain overlay — premium finish */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    /* Border beam — conic light traveling around glass frames */
+    @property --bb-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+    .border-beam {
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 2px;
+      background: conic-gradient(from var(--bb-angle), transparent 0deg, transparent 314deg, rgba(112, 214, 255, 0.9) 338deg, #eaf6ff 352deg, transparent 360deg);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      animation: bb-spin 5.5s linear infinite;
+      pointer-events: none;
+    }
+    .card-3d-body > .border-beam { position: absolute; z-index: 3; }
+    @keyframes bb-spin { to { --bb-angle: 360deg; } }
+    /* Marquee ticker under the nav */
+    .unal-ticker {
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 16, 36, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .unal-ticker-track { display: flex; width: max-content; animation: unal-marquee 30s linear infinite; }
+    .unal-ticker:hover .unal-ticker-track { animation-play-state: paused; }
+    .unal-ticker-track span {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      line-height: 1;
+      color: rgba(190, 215, 255, 0.62);
+      padding: 10px 0;
+      white-space: nowrap;
+    }
+    @keyframes unal-marquee { to { transform: translateX(-50%); } }
+    /* Shine sweep on primary CTAs */
+    .btn-shine { position: relative; overflow: hidden; }
+    .btn-shine::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -80%;
+      width: 55%;
+      background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      transform: skewX(-18deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+    .btn-shine:hover::after { left: 130%; }
+    /* Pulsing live dots */
+    .dot-live { position: relative; }
+    .dot-live::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      background: inherit;
+      opacity: 0.55;
+      animation: dot-pulse 2.2s ease-out infinite;
+    }
+    @keyframes dot-pulse { 0% { transform: scale(0.6); opacity: 0.55; } 70% { transform: scale(2.1); opacity: 0; } 100% { transform: scale(2.1); opacity: 0; } }
+    /* Scroll reveal (JS adds .reveal, then .in when visible) */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+    .reveal.in { opacity: 1; transform: none; }
+    /* Info strip + hours cards: gentle hover lift */
+    section.border-y .frosted-blur, section.border-t .frosted-blur { transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; }
+    section.border-y .frosted-blur:hover, section.border-t .frosted-blur:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(4, 12, 32, 0.45); }
+    /* Reduced motion: calm everything */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .border-beam { animation: none; opacity: 0.5; }
+      .unal-ticker-track { animation: none; }
+      .dot-live::after { animation: none; opacity: 0; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .btn-shine::after { display: none; }
+    }
     .menu-item-dots {
       flex: 1;
       border-bottom: 2px dotted rgba(255, 255, 255, 0.18);
@@ -119,6 +215,7 @@
   <script src="/fluid-ribbons-background.js" defer></script>
   <script src="/phone-3d.js" defer></script>
   <script src="/card-3d.js" defer></script>
+  <script src="/ui-polish.js" defer></script>
   <script type="module" crossorigin src="/assets/index-BlaB6_gO.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-Dmi22DON.js">
   <link rel="modulepreload" crossorigin href="/assets/framer-motion-D78Ggd5X.js">
