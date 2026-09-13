@@ -88,8 +88,26 @@
     }
     .card-3d-container:hover .card-3d-body::after { opacity: 1; }
     .card-3d-body > * { position: relative; z-index: 1; }
+    /* Hero description under the main title */
+    .hero-desc { color: #aebad0; }
+    /* Floating 3D iPhone */
+    .phone-3d-host {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      height: 440px;
+      margin-inline: auto;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      filter: drop-shadow(0 34px 60px rgba(2, 8, 22, 0.6));
+    }
+    .phone-3d-host:active { cursor: grabbing; }
+    .phone-3d-host > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   </style>
   <script src="/fluid-ribbons-background.js" defer></script>
+  <script src="/phone-3d.js" defer></script>
   <script src="/card-3d.js" defer></script>
   <script type="module" crossorigin src="/assets/index-BlaB6_gO.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-Dmi22DON.js">
