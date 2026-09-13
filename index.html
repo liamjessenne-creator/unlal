@@ -10,26 +10,19 @@
   <meta name="theme-color" content="#0b2c5f" />
   <title>UNAL Market · Armentières</title>
   <style>
-    /* Gotu — secondary titles (auto-hosted, no external requests) */
+    /* Art Disco by Barry Mieny (OFL) — secondary titles (self-hosted, no external requests) */
     @font-face {
-      font-family: "Gotu";
+      font-family: "Art Disco";
       font-style: normal;
       font-weight: 400;
       font-display: swap;
-      src: url("/assets/gotu-latin.woff2") format("woff2");
-      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212, U+FEFF, U+FFFD;
+      src: url("/assets/fonts/artdisco.woff2") format("woff2"),
+           url("/assets/fonts/artdisco.woff") format("woff");
     }
-    @font-face {
-      font-family: "Gotu";
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: url("/assets/gotu-latin-ext.woff2") format("woff2");
-      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-    /* Secondary titles only — the main hero title keeps its own font. */
-    .font-gotu {
-      font-family: "Gotu", "Archivo", system-ui, sans-serif;
+    /* Secondary titles only — the main hero title keeps its own font.
+       Note: Art Disco has no accented glyphs; é/è/. fall back to Archivo. */
+    .font-artdisco {
+      font-family: "Art Disco", "Archivo", system-ui, sans-serif;
     }
     /* 3D card (Aceternity-style) minimal chrome */
     .card-3d-container { display: block; width: 100%; }
