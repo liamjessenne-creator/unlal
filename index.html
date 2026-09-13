@@ -94,8 +94,10 @@
     .phone-3d-host {
       position: relative;
       width: 100%;
-      max-width: 340px;
-      height: 500px;
+      max-width: 460px;
+      height: 640px;
+      /* Keep the (rotatable) phone inside the viewport on short screens. */
+      max-height: 88vh;
       margin-inline: auto;
       cursor: grab;
       touch-action: none;
@@ -213,6 +215,7 @@
     .menu-item-price { color: #70d6ff; }
   </style>
   <script src="/fluid-ribbons-background.js" defer></script>
+  <script src="/crystal-glow-title.js?v=3" defer></script>
   <script src="/phone-3d.js" defer></script>
   <script src="/card-3d.js" defer></script>
   <script src="/ui-polish.js" defer></script>

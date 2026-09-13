@@ -379,7 +379,9 @@ void main() {
     const uModel = gl.getUniformLocation(prog, "uModel");
     gl.uniform1i(gl.getUniformLocation(prog, "uScreen"), 0);
     gl.uniform1i(gl.getUniformLocation(prog, "uBack"), 1);
-    gl.uniform3f(gl.getUniformLocation(prog, "uCam"), 0, 0, 3.4);
+    // Camera far enough back that a full 360° spin + float/sway never clips
+    // the phone's corners (3D half-diagonal of the phone ≈ 1.04 world units).
+    gl.uniform3f(gl.getUniformLocation(prog, "uCam"), 0, 0, 4.6);
 
     const texScreen = gl.createTexture();
     const texBack = gl.createTexture();
@@ -430,7 +432,7 @@ void main() {
       dragging = true;
       lastX = e.clientX; lastY = e.clientY; lastMoveT = performance.now();
       yawVel = 0; pitchVel = 0;
-      canvas.setPointerCapture(e.pointerId);
+      try { canvas.setPointerCapture(e.pointerId); } catch { }
       e.preventDefault();
     };
     const onMove = (e) => {
@@ -480,7 +482,8 @@ void main() {
 
       const aspect = canvas.width / Math.max(1, canvas.height);
       const proj = perspective(0.62, aspect, 0.1, 40);
-      const view = new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,-3.4,1]);
+      // Same distance as uCam above (kept in sync).
+      const view = new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,-4.6,1]);
       let mvp = mat4Mul(proj, view);
 
       const floatY = Math.sin(t * 1.1) * 0.05;
@@ -517,6 +520,13 @@ void main() {
       document.querySelectorAll("[data-phone-3d]:not([data-phone3d-bound])").forEach((host) => {
         host.dataset.phone3dBound = "1";
         host.style.position = host.style.position || "relative";
+        // The React wrapper around the host is capped at 360px in the bundle;
+        // widen it so the bigger canvas is not squeezed back down.
+        const wrapper = host.parentElement;
+        if (wrapper && wrapper !== document.body) {
+          wrapper.style.maxWidth = "460px";
+          wrapper.style.width = "100%";
+        }
         const canvas = document.createElement("canvas");
         canvas.setAttribute("aria-hidden", "true");
         host.appendChild(canvas);
