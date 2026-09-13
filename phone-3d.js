@@ -204,8 +204,8 @@
     const cF = add(0, 0, d2, 0, 0, 1, 0.5, 0.5, 0);
     for (let i = 0; i < n; i++) idx.push(cF, ringF[i], ringF[(i + 1) % n]);
 
-    // back cap
-    const ringB = pts.map(([x, y]) => add(x, y, -d2, 0, 0, -1, x / W + 0.5, y / H + 0.5, 1));
+    // back cap — U mirrored so the back reads correctly when flipped around
+    const ringB = pts.map(([x, y]) => add(x, y, -d2, 0, 0, -1, 0.5 - x / W, y / H + 0.5, 1));
     const cB = add(0, 0, -d2, 0, 0, -1, 0.5, 0.5, 1);
     for (let i = 0; i < n; i++) idx.push(cB, ringB[(i + 1) % n], ringB[i]);
 
@@ -378,7 +378,7 @@ void main() {
     const uModel = gl.getUniformLocation(prog, "uModel");
     gl.uniform1i(gl.getUniformLocation(prog, "uScreen"), 0);
     gl.uniform1i(gl.getUniformLocation(prog, "uBack"), 1);
-    gl.uniform3f(gl.getUniformLocation(prog, "uCam"), 0, 0, 3.7);
+    gl.uniform3f(gl.getUniformLocation(prog, "uCam"), 0, 0, 3.4);
 
     const texScreen = gl.createTexture();
     const texBack = gl.createTexture();
@@ -479,7 +479,7 @@ void main() {
 
       const aspect = canvas.width / Math.max(1, canvas.height);
       const proj = perspective(0.62, aspect, 0.1, 40);
-      const view = new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,-3.7,1]);
+      const view = new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,-3.4,1]);
       let mvp = mat4Mul(proj, view);
 
       const floatY = Math.sin(t * 1.1) * 0.05;
