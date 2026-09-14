@@ -63,7 +63,16 @@
   position: absolute; inset: 0; overflow: hidden;
   background: #000; color: #fff; user-select: none; -webkit-user-select: none;
   outline: none;
+  /* EN FOND DE SITE : jamais de capture d'événements — la molette, les clics
+     et le tactile doivent traverser vers le contenu (sinon le carrousel fixed
+     piège le scroll et empêche les boutons de se cliquer). */
+  pointer-events: none;
 }
+
+/* Les overlays typographiques du composant entrent en collision avec
+   l'en-tête, le ticker et les titres du site — masqués en fin de feuille
+   (spécificité + !important) pour battre les règles display:flex ci-dessous. */
+.unal-carousel, .unal-carousel * { box-sizing: border-box; }
 .unal-carousel, .unal-carousel * { box-sizing: border-box; }
 
 /* fond : photo focalisée agrandie + re-teinte accent (mix-blend color/multiply) */
@@ -99,8 +108,8 @@
 
 /* strip : bord haut partagé, carte focalisée deux fois plus haute */
 .unal-cstrip { position: absolute; left: 0; right: 0; }
-.unal-ctrack { display: flex; align-items: flex-start; cursor: grab; touch-action: pan-y; will-change: transform; }
-.unal-ctrack.dragging { cursor: grabbing; }
+.unal-ctrack { display: flex; align-items: flex-start; touch-action: pan-y; will-change: transform; }
+.unal-ctrack.dragging { cursor: default; }
 .unal-ccard { position: relative; flex-shrink: 0; overflow: hidden; border-radius: 0; background: rgba(255,255,255,.05);
   border: 0; padding: 0; -webkit-appearance: none; appearance: none; }
 .unal-ccard img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
@@ -117,6 +126,14 @@
   .unal-cb img { transition: none; transform: scale(1.28); }
   .unal-ch2 .ln > span { transition: none; transform: none; }
 }
+
+.unal-carousel .unal-ctop,
+.unal-carousel .unal-chead,
+.unal-carousel .unal-crail { display: none !important; }
+
+/* Les gros anneaux décoratifs du bundle (/affichage), prévus pour une page
+   sombre, passent mal par-dessus les photos du carrousel — quasi invisibles. */
+.unal-hero-ring { border-color: rgba(255, 255, 255, 0.035) !important; }
 `;
     document.head.appendChild(style);
   }
@@ -366,11 +383,8 @@
       go(keys[e.key]);
     });
 
-    // pause au survol / focus (autoplay seulement)
-    stage.addEventListener("pointerenter", () => { paused = true; });
-    stage.addEventListener("pointerleave", () => { paused = false; });
-    stage.addEventListener("focus", () => { paused = true; });
-    stage.addEventListener("blur", () => { paused = false; });
+    // pause au survol / focus (autoplay seulement)    // NOTE : stage est pointer-events:none (fond) — ces événements ne se
+    // déclenchent plus, l'autoplay tourne donc en continu (consigne : 5 s).
 
     // ---- autoplay 5 s (consigne) ---------------------------------------------------
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -400,10 +414,12 @@
     };
     raf = requestAnimationFrame(frame);
 
-    // ---- boot -------------------------------------------------------------------------
-    read();
-    applyIndex();
-    x = xTarget; // démarrage centré sans glisser
+  // ---- boot -------------------------------------------------------------------------
+  read();
+  applyIndex();
+  x = xTarget; // démarrage centré sans glisser
+
+
   }
 
   // ---- le contenu laisse voir le fond (main transparent sur toutes les pages) ------
@@ -417,8 +433,29 @@
   // ---- monté en FOND : recréé si le shell React recrée .site-background -------------
   let active = null;
 
+  // adoucir les anneaux décoratifs du bundle (montés après coup par React) —
+  // relancé depuis la boucle ensure() qui tourne déjà toutes les 600 ms.
+  function softenRings() {
+    try {
+      document
+        .querySelectorAll('div[class*="rounded-full"][class*="border-"]')
+        .forEach((el) => {
+          if (el.querySelector("*") || el.textContent.trim()) return;
+          if (
+            !el.classList.contains("unal-hero-ring") &&
+            parseInt(getComputedStyle(el).borderTopWidth) >= 40
+          ) {
+            el.classList.add("unal-hero-ring");
+          }
+        });
+    } catch (e) {
+      /* cosmétique */
+    }
+  }
+
   function ensure() {
     keepMainTransparent();
+    softenRings();
     const bg = document.querySelector(".site-background");
     if (!bg) return;
     let stage = bg.querySelector(":scope > .unal-carousel");
