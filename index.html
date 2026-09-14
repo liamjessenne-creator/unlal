@@ -7,7 +7,7 @@
   <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Menu digital d'UNAL MARKET à Armentières : sandwichs, burgers, pâtes et tacos, avec mode d'affichage pour les écrans du magasin." />
-  <meta name="theme-color" content="#0b2c5f" />
+  <meta name="theme-color" content="#0d0f12" />
   <title>UNAL Market · Armentières</title>
   <style>
     /* Clash Display (Fontshare — ITF Free Font License, free for commercial use)
@@ -23,26 +23,118 @@
     .font-display {
       font-family: "Clash Display", "Archivo", system-ui, sans-serif;
     }
-    /* Liquid-glass text treatment for the homepage secondary titles. */
-    .glass-title {
+    /* ============ PREMIUM CHROME TITLES ============
+       Clean, technical polished-chrome treatment applied by ui-polish.js to
+       every main & secondary title (h1–h6 + the 3D-card titles): vertical
+       steel banding with a precise dark horizon line, plus a specular sheen
+       that drifts across the glyphs. The sparkling hero title is untouched. */
+    .chrome-title {
+      font-family: "Clash Display", "Archivo", system-ui, sans-serif;
       font-weight: 700;
       letter-spacing: -0.015em;
-      color: #eaf3ff;
-      -webkit-text-fill-color: #eaf3ff;
-      filter: drop-shadow(0 12px 30px rgba(96, 170, 255, 0.22));
+      color: #eef4fb;
+      filter:
+        drop-shadow(0 1px 1px rgba(8, 13, 25, 0.6))
+        drop-shadow(0 12px 28px rgba(3, 10, 24, 0.5));
     }
     @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-      .glass-title {
-        background: linear-gradient(165deg, #ffffff 0%, #d5e9ff 42%, #93bcff 62%, #eaf5ff 100%);
+      .chrome-title {
+        /* layer 1: drifting specular sheen — layer 2: static chrome bands */
+        background-image:
+          linear-gradient(115deg,
+            rgba(255, 255, 255, 0) 38%,
+            rgba(255, 255, 255, 0.28) 46%,
+            rgba(255, 255, 255, 0.55) 50%,
+            rgba(255, 255, 255, 0.28) 54%,
+            rgba(255, 255, 255, 0) 62%),
+          linear-gradient(180deg,
+            #ffffff 0%,
+            #f3f7fb 9%,
+            #dce6f0 20%,
+            #b2c2d3 31%,
+            #7b8fa5 40%,
+            #47596f 46%,
+            #121b29 50%,
+            #cfdbe7 54%,
+            #f6fafd 62%,
+            #ffffff 71%,
+            #ccd8e5 81%,
+            #8397ad 90%,
+            #b5c5d6 100%);
+        background-size: 220% 100%, 100% 100%;
+        background-position: 0% 0%, 0 0;
+        background-repeat: no-repeat;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        animation: chrome-flow 9s ease-in-out infinite;
+      }
+      /* Accent spans inside a title (e.g. "simplement.") render chrome too:
+         a transparent fill reveals the parent's clipped gradient, so the
+         whole title reads as one continuous piece of polished metal. */
+      .chrome-title :is(span, strong, b) {
+        background: none;
+        -webkit-text-fill-color: transparent;
       }
     }
-    /* Keep accent-colored inner spans solid (e.g. "simplement." in brand blue). */
-    .glass-title :is(span, strong, b) {
-      -webkit-text-fill-color: currentColor;
-      background: none;
+    /* No background-clip:text support → clean solid metal-white */
+    @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+      .chrome-title {
+        color: #eef2f8;
+        filter: drop-shadow(0 2px 4px rgba(3, 10, 24, 0.55));
+      }
+    }
+    /* Hero description under the main title */
+    .hero-desc { color: #aebad0; }
+    /* The sheen drifts across the glyphs and comes back — subtle, liquid. */
+    @keyframes chrome-flow {
+      0%   { background-position: 0% 0%, 0 0; }
+      50%  { background-position: -100% 0%, 0 0; }
+      100% { background-position: 0% 0%, 0 0; }
+    }
+    /* Hero title: same liquid chrome UNDER the component's own glare layer
+       (component file untouched — its hover glare + stars keep working; the
+       animation preserves the glare's var(--pos) position expression). */
+    @keyframes chrome-flow-hero {
+      0%   { background-position: calc(var(--pos, 0) * -200%) 0%, 0% 0%, 0 0; }
+      50%  { background-position: calc(var(--pos, 0) * -200%) 0%, -100% 0%, 0 0; }
+      100% { background-position: calc(var(--pos, 0) * -200%) 0%, 0% 0%, 0 0; }
+    }
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      html .sparkle-button span:last-of-type {
+        background-image:
+          linear-gradient(108deg,
+            transparent 0 55%,
+            var(--glare) 55% 60%,
+            transparent 60% 70%,
+            var(--glare) 70% 85%,
+            transparent 85%),
+          linear-gradient(115deg,
+            rgba(255, 255, 255, 0) 38%,
+            rgba(255, 255, 255, 0.28) 46%,
+            rgba(255, 255, 255, 0.55) 50%,
+            rgba(255, 255, 255, 0.28) 54%,
+            rgba(255, 255, 255, 0) 62%),
+          linear-gradient(180deg,
+            #ffffff 0%,
+            #f3f7fb 9%,
+            #dce6f0 20%,
+            #b2c2d3 31%,
+            #7b8fa5 40%,
+            #47596f 46%,
+            #121b29 50%,
+            #cfdbe7 54%,
+            #f6fafd 62%,
+            #ffffff 71%,
+            #ccd8e5 81%,
+            #8397ad 90%,
+            #b5c5d6 100%);
+        background-position: calc(var(--pos) * -200%) 0%, 0% 0%, 0 0;
+        background-size: 200% 100%, 220% 100%, 100% 100%;
+        background-repeat: no-repeat;
+        animation: chrome-flow-hero 9s ease-in-out infinite;
+        animation-delay: -3s; /* desynchronized from the section titles */
+      }
     }
     /* 3D card — liquid glass chrome */
     .card-3d-container { display: block; width: 100%; }
@@ -52,7 +144,7 @@
       border: 1px solid rgba(255, 255, 255, 0.24);
       background:
         linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.12) 100%),
-        rgba(13, 24, 50, 0.38);
+        rgba(12, 14, 18, 0.38);
       backdrop-filter: blur(20px) saturate(170%);
       -webkit-backdrop-filter: blur(20px) saturate(170%);
       padding: 1.75rem;
@@ -71,7 +163,7 @@
       inset: -45%;
       background:
         radial-gradient(42% 36% at 26% 20%, rgba(255, 255, 255, 0.30), transparent 62%),
-        radial-gradient(38% 32% at 80% 84%, rgba(112, 214, 255, 0.16), transparent 65%);
+        radial-gradient(38% 32% at 80% 84%, rgba(255, 255, 255, 0.10), transparent 65%);
       pointer-events: none;
       z-index: 0;
     }
@@ -109,12 +201,12 @@
     .phone-3d-host > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
     /* /menu — dish line: name, dotted leader, price aligned right */
     .menu-item-row { position: relative; transition: background 0.2s ease; }
-    .menu-item-row:hover { background: rgba(112, 214, 255, 0.05); border-radius: 6px; }
-    .menu-item-name { position: relative; z-index: 1; background: #0d1b36; padding-right: 0.5rem; transition: color 0.2s ease; }
+    .menu-item-row:hover { background: rgba(255, 255, 255, 0.06); border-radius: 6px; }
+    .menu-item-name { position: relative; z-index: 1; background: #121419; padding-right: 0.5rem; transition: color 0.2s ease; }
     .menu-item-row:hover .menu-item-name { color: #eaf3ff; }
     /* ============ UI POLISH LAYER (Magic UI-style) ============ */
     html { scroll-behavior: smooth; }
-    ::selection { background: rgba(112, 214, 255, 0.35); color: #ffffff; }
+    ::selection { background: rgba(255, 255, 255, 0.25); color: #ffffff; }
     [id] { scroll-margin-top: 96px; }
     /* Film grain overlay — premium finish */
     body::after {
@@ -133,7 +225,7 @@
       inset: -1px;
       border-radius: inherit;
       padding: 2px;
-      background: conic-gradient(from var(--bb-angle), transparent 0deg, transparent 314deg, rgba(112, 214, 255, 0.9) 338deg, #eaf6ff 352deg, transparent 360deg);
+      background: conic-gradient(from var(--bb-angle), transparent 0deg, transparent 314deg, rgba(255, 255, 255, 0.85) 338deg, #ffffff 352deg, transparent 360deg);
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -147,7 +239,7 @@
     .unal-ticker {
       overflow: hidden;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(8, 16, 36, 0.55);
+      background: rgba(10, 12, 16, 0.55);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
@@ -159,7 +251,7 @@
       font-weight: 600;
       letter-spacing: 0.22em;
       line-height: 1;
-      color: rgba(190, 215, 255, 0.62);
+      color: rgba(208, 212, 218, 0.62);
       padding: 10px 0;
       white-space: nowrap;
     }
@@ -180,6 +272,19 @@
     }
     .btn-shine:hover::after { left: 130%; }
     /* Pulsing live dots */
+    /* Liquid glass primary buttons (ui-polish.js adds .unal-glass-btn to filled CTAs) */
+    .unal-glass-btn {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.12)) !important;
+      border: 1px solid rgba(255, 255, 255, 0.28) !important;
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 10px 30px rgba(3, 5, 9, 0.45) !important;
+      color: #f4f6f9 !important;
+      text-shadow: 0 1px 2px rgba(3, 6, 12, 0.5);
+    }
+    .unal-glass-btn:hover { background: linear-gradient(135deg, rgba(255,255,255,0.26), rgba(255,255,255,0.10) 45%, rgba(255,255,255,0.18)) !important; }
     .dot-live { position: relative; }
     .dot-live::after {
       content: "";
@@ -205,20 +310,45 @@
       .dot-live::after { animation: none; opacity: 0; }
       .reveal { opacity: 1; transform: none; transition: none; }
       .btn-shine::after { display: none; }
+      /* The sparkle stars are an infinite animation — hide them for users
+         who ask for reduced motion (the relief effect keeps working). */
+      .sparkle-button svg { animation: none; }
+      .chrome-title,
+      html .sparkle-button span:last-of-type { animation: none; }
     }
+    /* ============ HERO TITLE — ROOM FOR THE SPARKLE EFFECT ============
+       The Crystal Glow component shrinks its text to fit this box, so a
+       wider/taller box = a bigger title + room for the popping stars.
+       (Site-level layout only; the component's code is untouched.) */
+    main .warp-text {
+      width: calc(100% + 3rem);          /* borrow the section padding */
+      margin-inline: -1.5rem;
+      height: clamp(19rem, 34vw, 30rem); /* more headroom for the stars */
+    }
+    @media (min-width: 64rem) {
+      main .warp-text {
+        width: calc(100% + 7rem);     /* borrow 2rem left + the 5rem grid gap */
+        margin-left: -2rem;
+        margin-right: -5rem;
+      }
+    }
+    /* Decorative pulse rings must never intercept the pointer: a stray
+       .dot-live on a big wrapper once covered the title and swallowed :hover. */
+    .dot-live::after { pointer-events: none; }
     .menu-item-dots {
       flex: 1;
       border-bottom: 2px dotted rgba(255, 255, 255, 0.18);
       transform: translateY(-3px);
       min-width: 1.5rem;
     }
-    .menu-item-price { color: #70d6ff; }
+    .menu-item-price { color: #e7ecf2; }
   </style>
-  <script src="/fluid-ribbons-background.js" defer></script>
-  <script src="/crystal-glow-title.js?v=4" defer></script>
-  <script src="/phone-3d.js" defer></script>
+  <script src="/hero-carousel-background.js?v=3" defer></script>
+  <script src="/gallery-accordion.js?v=1" defer></script>
+  <script src="/crystal-glow-title.js?v=5" defer></script>
+  <script src="/phone-3d.js?v=2" defer></script>
   <script src="/card-3d.js" defer></script>
-  <script src="/ui-polish.js" defer></script>
+  <script src="/ui-polish.js?v=6" defer></script>
   <script type="module" crossorigin src="/assets/index-BlaB6_gO.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-Dmi22DON.js">
   <link rel="modulepreload" crossorigin href="/assets/framer-motion-D78Ggd5X.js">

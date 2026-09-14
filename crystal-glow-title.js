@@ -25,7 +25,7 @@
     letterSpacing: "0.04em", // preset
     lineHeight: 1, // preset "1em"
     textColor: "#FFFFFF",
-    shadowColor: "#F57F17", // component default (amber)
+    shadowColor: "#FFFFFF", // white relief (was amber #F57F17)
     glareColor: "rgba(255, 255, 255, 0.75)", // component default
     glareSpeed: 1,
     glareDirection: "left-to-right",

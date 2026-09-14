@@ -70,6 +70,7 @@
       const cs = getComputedStyle(el);
       if (cs.backgroundColor === "rgba(0, 0, 0, 0)") return;
       el.classList.add("btn-shine");
+      if (el.tagName === "A" || el.tagName === "BUTTON") el.classList.add("unal-glass-btn");
     });
   }
 
@@ -109,10 +110,20 @@
   /* ---------- 5. Pulsing status dots ---------- */
   function pulseDots() {
     if (reduceMotion.matches) return;
-    // live dot next to "ouvert · menu disponible"
+    // live dot next to "ouvert · menu disponible". The dot must be a small,
+    // solid-colored span (same precision as the hours cards below). A loose
+    // match once stamped .dot-live on the big hero wrapper; its ::after
+    // overlay then covered the sparkle title and swallowed :hover.
     document.querySelectorAll("div").forEach((el) => {
       if (!/ouvert\s*·\s*menu disponible/i.test(el.textContent) || el.children.length > 3) return;
-      const dot = el.querySelector("span, i, div");
+      const dot = [...el.querySelectorAll("span, i, div")].find((c) => {
+        const cs = getComputedStyle(c);
+        return (
+          c.offsetWidth <= 14 &&
+          c.offsetWidth === c.offsetHeight &&
+          cs.backgroundColor !== "rgba(0, 0, 0, 0)"
+        );
+      });
       if (dot && !dot.classList.contains("dot-live")) dot.classList.add("dot-live");
     });
     // green open-dots in the hours cards
@@ -126,6 +137,32 @@
     });
   }
 
+  /* ---------- 6. Chrome-metal finish on ALL main & secondary titles ----------
+     Adds .chrome-title (font + animated polished-chrome gradient, see
+     index.html) to every real title of every page: landing, /menu, /affichage
+     and /informations-legales. Skips the sparkling hero title (its own UI is
+     kept intact) and all small mono kickers/pills. Accent spans inside a
+     title (e.g. "simplement.") render the same chrome — see index.html.
+     Each title gets a negative animation-delay so the sheens drift out of
+     sync instead of pulsing in a lockstep wave. */
+  function applyChromeTitles() {
+    document
+      .querySelectorAll(
+        "h1:not([data-chrome-done]), h2:not([data-chrome-done]), " +
+        "h3:not([data-chrome-done]), h4:not([data-chrome-done]), " +
+        "h5:not([data-chrome-done]), h6:not([data-chrome-done]), " +
+        ".card-3d-body > span.font-display:not([data-chrome-done])"
+      )
+      .forEach((el) => {
+        if (el.closest(".sparkle-button")) return;      // hero title untouched
+        if (el.classList.contains("font-mono")) return;  // mono kickers/pills stay as-is
+        if ((el.textContent || "").length > 80) return;  // titles, not paragraphs
+        el.classList.add("chrome-title");
+        el.style.animationDelay = `${-(document.querySelectorAll(".chrome-title").length - 1) * 1.3}s`;
+        el.setAttribute("data-chrome-done", "");
+      });
+  }
+
   /* ---------- boot ---------- */
   function runOnce() {
     mountTicker();
@@ -133,6 +170,7 @@
     addShine();
     initReveals();
     pulseDots();
+    applyChromeTitles();
   }
 
   // The SPA re-renders route content; run at boot and again shortly after.
@@ -140,4 +178,13 @@
   const t1 = setTimeout(runOnce, 800);
   const t2 = setTimeout(runOnce, 2000);
   window.addEventListener("popstate", () => setTimeout(runOnce, 150));
+
+  // Client-side navigation (pushState) fires no event we can hook: watch the
+  // DOM instead. Debounced; the [data-chrome-done] guards make re-runs cheap.
+  let moTimer = 0;
+  const mo = new MutationObserver(() => {
+    clearTimeout(moTimer);
+    moTimer = setTimeout(runOnce, 120);
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true });
 })();

@@ -6,7 +6,7 @@
   "use strict";
 
   // Same photo the original widget used (map preview around UNAL MARKET).
-  const IMG_SRC = "/assets/unal-map-preview-dLrHbm-N.svg";
+  const IMG_SRC = "/img/phone-map.png"; // photo fournie, affichée telle quelle
 
   // ---- dimensions (world units) ---------------------------------------------
   const W = 1.0;            // phone width
@@ -50,7 +50,7 @@
     g.save();
     rr(g, 22, 22, TW - 44, TH - 44, 30);
     g.clip();
-    g.fillStyle = "#0b1626"; g.fillRect(22, 22, TW - 44, TH - 44);
+    g.fillStyle = "#101216"; g.fillRect(22, 22, TW - 44, TH - 44);
     const iw = img.width || 1024, ih = img.height || 1024;
     const sc = Math.max((TW - 44) / iw, (TH - 44) / ih);
     const dw = iw * sc, dh = ih * sc;
@@ -400,7 +400,7 @@ void main() {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texScreen);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-      new Uint8Array([10, 22, 44, 255]));
+      new Uint8Array([16, 18, 22, 255]));
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
