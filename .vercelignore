@@ -3,3 +3,4 @@ _tools
 node_modules
 *.log
 *.log.err
+_audit

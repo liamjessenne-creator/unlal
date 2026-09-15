@@ -6,9 +6,53 @@
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Menu digital d'UNAL MARKET à Armentières : sandwichs, burgers, pâtes et tacos, avec mode d'affichage pour les écrans du magasin." />
+  <meta name="description" content="Épicerie-restaurant au 3 place Thiers à Armentières : sandwichs, burgers, pâtes et tacos, à emporter ou à déguster sur place." />
   <meta name="theme-color" content="#0d0f12" />
+  <link rel="canonical" href="https://unal-armentieres.vercel.app/" />
+  <!-- Partage (WhatsApp, Facebook, X…) : sans ces balises, le lien s'affichait nu. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="UNAL Market" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="UNAL Market · Armentières" />
+  <meta property="og:description" content="Sandwichs, burgers, pâtes et tacos au 3 place Thiers, Armentières — sur place ou à emporter." />
+  <meta property="og:url" content="https://unal-armentieres.vercel.app/" />
+  <meta property="og:image" content="https://unal-armentieres.vercel.app/img/unal-08-commerce.jpg" />
+  <meta property="og:image:width" content="811" />
+  <meta property="og:image:height" content="628" />
+  <meta property="og:image:alt" content="La devanture d'UNAL MARKET, 3 place Thiers à Armentières" />
+  <meta name="twitter:card" content="summary_large_image" />
   <title>UNAL Market · Armentières</title>
+  <!-- Données structurées : commerçant local + horaires + menu, pour les
+       résultats enrichis Google (les balises restent lisibles sans JS). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "UNAL MARKET",
+    "description": "Épicerie-restaurant à Armentières : sandwichs, burgers, pâtes et tacos, sur place ou à emporter.",
+    "url": "https://unal-armentieres.vercel.app/",
+    "image": "https://unal-armentieres.vercel.app/img/unal-08-commerce.jpg",
+    "servesCuisine": ["Sandwichs", "Burgers", "Pâtes", "Tacos"],
+    "priceRange": "€",
+    "hasMenu": "https://unal-armentieres.vercel.app/menu",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "3 place Thiers",
+      "postalCode": "59280",
+      "addressLocality": "Armentières",
+      "addressCountry": "FR"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 50.6877, "longitude": 2.8778 },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "10:00",
+        "closes": "19:00"
+      }
+    ]
+  }
+  </script>
   <style>
     /* Clash Display (Fontshare — ITF Free Font License, free for commercial use)
        Secondary titles — self-hosted, no external requests. */
@@ -32,6 +76,12 @@
       font-family: "Clash Display", "Archivo", system-ui, sans-serif;
       font-weight: 700;
       letter-spacing: -0.015em;
+      /* Le lettrage est serré ET l'espace de Clash Display est étroit : sans
+         ce correctif il ne restait que 3 px entre les mots de « SUR PLACE »
+         (16 px de lettre), donc le titre se lisait « SURPLACE » — idem
+         « VOIRLEMENU. ». On rend l'air entre les MOTS sans desserrer les
+         lettres, ce qui préserve l'aspect chrome. */
+      word-spacing: 0.16em;
       color: #eef4fb;
       filter:
         drop-shadow(0 1px 1px rgba(8, 13, 25, 0.6))
@@ -188,17 +238,184 @@
       width: 100%;
       max-width: 460px;
       height: 640px;
-      /* Keep the (rotatable) phone inside the viewport on short screens. */
+      /* Keep the phone inside the viewport on short screens. */
       max-height: 88vh;
       margin-inline: auto;
-      cursor: grab;
-      touch-action: none;
+      /* Le widget n'est plus « bougeable » : le curseur reste neutre, et
+         phone-3d.js ne passe en « pointer » que pile sur le téléphone. */
+      cursor: default;
       user-select: none;
       -webkit-user-select: none;
-      filter: drop-shadow(0 34px 60px rgba(2, 8, 22, 0.6));
+      /* isolement GPU : le canvas animé ne repeint pas le reste de la page */
+      isolation: isolate;
+      contain: layout paint;
     }
-    .phone-3d-host:active { cursor: grabbing; }
-    .phone-3d-host > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    /* Halo doux sous le téléphone : il « flotte » au-dessus de la page.
+       (Bien moins coûteux qu'un filter: drop-shadow rejoué à chaque frame.) */
+    .phone-3d-host::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 2%;
+      width: 66%;
+      height: 12%;
+      transform: translateX(-50%);
+      background: radial-gradient(50% 50% at 50% 50%, rgba(2, 8, 22, 0.72), rgba(2, 8, 22, 0) 72%);
+      filter: blur(14px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .phone-3d-host > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
+    /* Carte MapLibre rendue hors-champ : elle alimente la texture de l'écran
+       tant qu'on n'est pas « entré » dans le téléphone. */
+    .unal-map-host {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    /* ---- Overlay : on plonge dans l'écran du téléphone ---- */
+    .unal-map-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: #05070b;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      /* La fenêtre de la carte : elle s'ouvre DEPUIS l'écran du téléphone (voir
+         screenClip() dans phone-3d.js) puis reprend tout l'écran. */
+      clip-path: inset(0px round 0px);
+      /* Accélération douce PUIS ralentissement : le plongeon démarre sur
+         l'écran du téléphone, gagne de la vitesse, puis se pose. */
+      transition: opacity 0.34s ease, clip-path 0.68s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .unal-map-overlay.in { opacity: 1; pointer-events: auto; }
+    /* Léger push-in pendant le plongeon : la carte vient vers nous. */
+    .unal-map-canvas {
+      position: absolute;
+      inset: 0;
+      transform: scale(1.06);
+      transition: transform 0.78s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .unal-map-overlay.in .unal-map-canvas { transform: none; }
+    .unal-map-canvas .unal-map-host { position: absolute; inset: 0; opacity: 1; pointer-events: auto; z-index: 1; border-radius: 0; }
+    .unal-map-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.5rem clamp(1rem, 4vw, 3rem);
+      background: linear-gradient(180deg, rgba(3, 5, 9, 0.82), rgba(3, 5, 9, 0));
+      pointer-events: none;
+    }
+    .unal-map-kicker {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(226, 232, 240, 0.72);
+    }
+    .unal-map-title {
+      font-family: "Clash Display", "Archivo", system-ui, sans-serif;
+      font-size: clamp(1.35rem, 3.4vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #f7fafc;
+      text-shadow: 0 10px 30px rgba(2, 6, 14, 0.6);
+    }
+    .unal-map-cta {
+      position: absolute;
+      left: clamp(1rem, 4vw, 3rem);
+      bottom: clamp(1.25rem, 4vw, 2.5rem);
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      height: 3.25rem;
+      padding-inline: 1.5rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.12));
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 10px 30px rgba(3, 5, 9, 0.45);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #f4f6f9;
+      text-decoration: none;
+      transition: transform 0.25s ease, background 0.25s ease, opacity 0.4s ease;
+    }
+    .unal-map-cta:hover { transform: translateY(-2px); background: linear-gradient(135deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.10) 45%, rgba(255, 255, 255, 0.18)); }
+    .unal-map-close {
+      position: absolute;
+      top: clamp(1rem, 4vw, 2rem);
+      right: clamp(1rem, 4vw, 2rem);
+      z-index: 4;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #f4f6f9;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(12, 14, 18, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+      transition: opacity 0.4s ease;
+    }
+    .unal-map-close:hover { background: rgba(255, 255, 255, 0.16); }
+    /* L'habillage n'apparaît qu'une fois la fenêtre ouverte : pendant le
+       plongeon il flotterait dans un timbre-poste. */
+    .unal-map-top,
+    .unal-map-cta,
+    .unal-map-close { opacity: 0; }
+    .unal-map-top { transition: opacity 0.4s ease; }
+    .unal-map-overlay.in .unal-map-close { opacity: 1; transition-delay: 0.3s; }
+    .unal-map-overlay.in .unal-map-top { opacity: 1; transition-delay: 0.4s; }
+    .unal-map-overlay.in .unal-map-cta { opacity: 1; transition-delay: 0.48s; }
+    /* Marqueur de la carte (pin + label) — même esprit que le composant fourni */
+    .unal-map-marker { position: relative; display: flex; flex-direction: column; align-items: center; }
+    .unal-map-pin {
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      background: #111318;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.12);
+      transition: transform 0.25s ease;
+    }
+    .unal-map-marker:hover .unal-map-pin { transform: scale(1.15); }
+    .unal-map-label {
+      margin-top: 0.4rem;
+      white-space: nowrap;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #f4f6f9;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(6, 9, 15, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
     /* /menu — dish line: name, dotted leader, price aligned right */
     .menu-item-row { position: relative; transition: background 0.2s ease; }
     .menu-item-row:hover { background: rgba(255, 255, 255, 0.06); border-radius: 6px; }
@@ -309,6 +526,13 @@
       .unal-ticker-track { animation: none; }
       .dot-live::after { animation: none; opacity: 0; }
       .reveal { opacity: 1; transform: none; transition: none; }
+      /* Le plongeon vers la carte est désactivé (phone-3d.js) : on retire aussi
+         les transitions qui l'accompagnent. */
+      .unal-map-overlay,
+      .unal-map-canvas,
+      .unal-map-top,
+      .unal-map-cta,
+      .unal-map-close { transition: none; }
       .btn-shine::after { display: none; }
       /* The sparkle stars are an infinite animation — hide them for users
          who ask for reduced motion (the relief effect keeps working). */
@@ -343,12 +567,16 @@
     }
     .menu-item-price { color: #e7ecf2; }
   </style>
-  <script src="/hero-carousel-background.js?v=7" defer></script>
-  <script src="/gallery-accordion.js?v=1" defer></script>
+  <script src="/diagonal-marquee-background.js?v=8" defer></script>
+  <script src="/gallery-accordion.js?v=2" defer></script>
   <script src="/crystal-glow-title.js?v=5" defer></script>
-  <script src="/phone-3d.js?v=2" defer></script>
+  <script src="/phone-3d.js?v=12" defer></script>
   <script src="/card-3d.js" defer></script>
-  <script src="/ui-polish.js?v=6" defer></script>
+  <script src="/open-status.js?v=1" defer></script>
+  <script src="/seo.js?v=1" defer></script>
+  <script src="/google-tab.js?v=7" defer></script>
+  <script src="/menu-category-images.js?v=6" defer></script>
+  <script src="/ui-polish.js?v=8" defer></script>
   <script type="module" crossorigin src="/assets/index-BlaB6_gO.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-vendor-Dmi22DON.js">
   <link rel="modulepreload" crossorigin href="/assets/framer-motion-D78Ggd5X.js">
